@@ -82,13 +82,16 @@ int list_size(List * list);
 
 /*
 	Pop the first item from the stack. 
-	Becuase this function returns the data element,
+	In this implementation, the top of the stack is the "last" item in the list. 
+	Because this function returns the data element,
 	the data element must be freed by the caller. 
+	This is the same as calling list_remove(list, list_size(list) -1);
 */
 void * list_pop(List * list);
 
 /*
 	Push an item onto the stack.
+	Same as calling list_addFirst(list, data).
 */
 void list_push(List * list, void * data);
 
@@ -115,6 +118,7 @@ void list_enqueue(List * list, void * data);
 
 /*
 	Dequeue an item from the queue;
+	Same as calling list_remove(list, 0);
 */
 void * list_dequeue(List * list);
 

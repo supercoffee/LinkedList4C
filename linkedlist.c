@@ -137,7 +137,7 @@ int list_size(List * list){
 
 void * list_pop(List * list){
 
-    return list_remove(list, 0);
+    return list_remove(list, list_size(list) - 1);
 
 }
 
@@ -181,7 +181,7 @@ void list_enqueue(List * list, void * data){
 
 void * list_dequeue(List * list){
 
-    return list_remove(list, list_size(list) - 1);
+    return list_remove(list, 0);
 
 }
 
