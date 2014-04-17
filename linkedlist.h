@@ -34,6 +34,17 @@ typedef struct{
 } List;
 
 /*
+	position denotes the index of the node referenced
+	by cur. If no data has been read from the iterator, 
+	then position will be -1. 
+*/
+typedef struct{
+	Node * head;
+	Node * cur;
+	int position;
+} Iterator;
+
+/*
     Creates an empty list.
  */
 List *  list_create();
@@ -128,5 +139,30 @@ void * list_dequeue(List * list);
 void list_sort(List * list, int item_size, int(*cmp)(const void * thing1, const void* thing2) );
 
 
+/*
+	Create a new iterator for the given list.
+	Starts at the beginning of the list. 
+*/
+Iterator * list_iterator(List * list);
+
+/*
+	Frees the iterator from memory. 
+*/
+void iter_destroy(Iterator * iterator);
+
+/*
+	Returns the next data element in the list.  
+	Returns NULL when the end of the list is reached.
+*/
+void * iter_next(Iterator * iterator);
+
+
+/*
+	Query the iterator to see if there are more items
+	to be read from the list.
+	Returns 1 if there are more items to be read. 
+	Returns 0 if the end of the list has been reached. 
+*/
+int iter_hasNext(Iterator * iterator);
 
 #endif

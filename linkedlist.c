@@ -246,4 +246,43 @@ void swap(Node * node1, Node * node2){
 
 }
 
+Iterator * list_iterator(List * list){
+
+    assert( list != NULL);
+
+    Iterator * iter = (Iterator*)calloc(1, sizeof(Iterator));
+
+    iter -> head = list -> head;
+    iter -> cur = list -> head;
+    iter -> position = -1;
+
+    return iter;
+}
+
+void iter_destroy(Iterator * iterator){
+    free(iterator);
+}
+
+void * iter_next(Iterator * iterator){
+
+    if(iterator -> cur -> next == iterator -> head){
+        return NULL;
+    }
+
+    iterator -> cur = iterator -> cur -> next;
+    iterator->position ++;
+
+    return iterator -> cur -> data;
+
+}
+
+int iter_hasNext(Iterator * iterator){
+
+    if(iterator -> cur -> next == iterator -> head){
+        return 0;
+    }
+
+    return 1;
+}
+
 
