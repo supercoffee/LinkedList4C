@@ -133,11 +133,6 @@ void list_enqueue(List * list, void * data);
 */
 void * list_dequeue(List * list);
 
-/*
-	Sort a linked list in place using a crappy sorting method. **Cough bubblesort *cough
-*/
-void list_sort(List * list, int item_size, int(*cmp)(const void * thing1, const void* thing2) );
-
 
 /*
 	Create a new iterator for the given list.

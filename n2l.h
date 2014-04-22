@@ -23,9 +23,6 @@ void n2l_list_print(Node ** head, char * (*toString)(void * item));
 
 void n2l_list_destroy(Node ** head);
 
-void n2l_list_sort(Node ** node, int item_size, int(*cmp)(const void * thing1, const void* thing2) );
-
-
 
 
 #endif
