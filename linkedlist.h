@@ -74,6 +74,12 @@ void list_add(List * list, void * data);
 void list_addFirst(List * list, void * data);
 
 /*
+	Insert the data at the given index.
+	Existing data will be shifted toward the high index values. 
+*/
+int list_insert(List * list, void * data, const int index);
+
+/*
     Print the contents of the list data.
     Preferably only use with char* data type,
     otherwise you'll get garbage.  

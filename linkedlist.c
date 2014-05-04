@@ -87,7 +87,31 @@ void list_addFirst(List * list, void * data){
 
 }
 
+int list_insert(List * list, void * data, const int index){
 
+    if(index >= list_size(list)){
+        return 1;
+    }
+
+    int i;
+    Node * head = list->head;
+    Node * cur = head->next;
+
+    for(i = 0; i < index, cur != head; i++, cur = cur->next);
+
+    Node * newNode = (Node * ) calloc(1, sizeof(Node));
+
+    newNode -> data = data;
+
+    newNode -> prev = cur -> prev;
+    newNode -> next = cur;
+    cur -> prev -> next = newNode;
+    head -> prev = newNode;
+
+    return 0;
+
+
+}
 
 void list_print(List * list, char * (*toString)(void * item) ){
 
