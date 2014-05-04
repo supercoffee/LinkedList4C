@@ -97,7 +97,7 @@ int list_insert(List * list, void * data, const int index){
     Node * head = list->head;
     Node * cur = head->next;
 
-    for(i = 0; i < index, cur != head; i++, cur = cur->next);
+    for(i = 0; i < index && cur != head; i++, cur = cur->next);
 
     Node * newNode = (Node * ) calloc(1, sizeof(Node));
 
