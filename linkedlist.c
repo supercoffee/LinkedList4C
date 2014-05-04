@@ -106,7 +106,7 @@ int list_insert(List * list, void * data, const int index){
     newNode -> prev = cur -> prev;
     newNode -> next = cur;
     cur -> prev -> next = newNode;
-    head -> prev = newNode;
+    cur -> prev = newNode;
 
     return 0;
 
