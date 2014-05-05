@@ -19,6 +19,8 @@ List *  list_create(){
     
     list -> head -> next = list -> head;
     list -> head -> prev = list -> head;
+
+    list -> size = 0;
     
     return list;
 
@@ -41,6 +43,7 @@ void list_clear(List * list){
         
     }
 
+    list -> size = 0;
 
 }
 
@@ -68,6 +71,8 @@ void list_add(List * list, void * data){
     head -> prev -> next = newNode;
     head -> prev = newNode;
 
+    list -> size++;
+
 
 }
 
@@ -85,11 +90,13 @@ void list_addFirst(List * list, void * data){
     head -> next -> prev = newNode;
     head -> next = newNode;
 
+    list -> size++;
+
 }
 
 int list_insert(List * list, void * data, const int index){
 
-    if(index >= list_size(list)){
+    if(index >= list_size(list) ){
         return 1;
     }
 
@@ -107,6 +114,8 @@ int list_insert(List * list, void * data, const int index){
     newNode -> next = cur;
     cur -> prev -> next = newNode;
     cur -> prev = newNode;
+
+    list -> size++;
 
     return 0;
 
@@ -146,16 +155,7 @@ void * list_get(List * list, int position){
 
 int list_size(List * list){
 
-    Node * head = list -> head;
-    Node * cur;
-
-    int size = 0;
-
-    for(cur = head-> next; cur != head; cur = cur ->next){
-        size++;
-    }
-
-    return size;
+    return list -> size;
 
 }
 
@@ -190,6 +190,8 @@ void * list_remove(List * list, int position){
     cur -> next -> prev = cur -> prev;
 
     free(cur);
+
+    list -> size--;
 
     return data;
 
@@ -231,36 +233,6 @@ int list_indexOf(List * list, void * tofind, int (*cmp)(const void* thing1, cons
     return index;
 }
 
-
-void list_sort(List * list, int item_size, int(*cmp)(const void * thing1, const void* thing2)){
-
-    int swapped = 1;
-    while(swapped){
-
-        Node * cur = list->head->next;
-        Node * curNext = cur ->next;
-
-        while(cur->next->data){
-
-            if(cmp(cur->data, curNext->data) > 0){
-
-                swap(cur, curNext);
-                swapped = 1;
-            }
-            else{
-                swapped = 0;
-            }
-
-            cur = curNext;
-            curNext = curNext ->next;
-
-
-        }
-
-
-    }
-
-}
 
 void swap(Node * node1, Node * node2){
 
