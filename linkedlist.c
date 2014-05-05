@@ -43,6 +43,9 @@ void list_clear(List * list){
         
     }
 
+    head -> prev = head;
+    head -> next = head;
+
     list -> size = 0;
 
 }

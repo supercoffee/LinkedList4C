@@ -29,7 +29,7 @@ typedef struct{
     //this head node is a dummy;
     Node * head;
 
-    int* size;
+    int size;
     
 } List;
 
