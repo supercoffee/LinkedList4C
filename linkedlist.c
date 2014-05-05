@@ -161,14 +161,28 @@ int list_size(List * list){
 
 void * list_pop(List * list){
 
-    return list_remove(list, list_size(list) - 1);
+    if(list_size(list) < 1){
+        return NULL;
+    }
 
+    Node * head = list -> head;
+    Node * cur = head -> prev;
+    void * data = cur -> data;
+
+    head -> prev = cur -> prev;
+    cur -> prev -> next = head;
+
+    free(cur);
+
+    list -> size--;
+
+    return data;
 }
 
 
 void list_push(List * list, void * data){
 
-    list_addFirst(list, data);
+    list_add(list, data);
 
 }
 
