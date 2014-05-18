@@ -140,4 +140,9 @@ void * iter_next(Iterator * iterator);
 */
 int iter_hasNext(Iterator * iterator);
 
+/*
+	Remove the last accessed item from the list.
+*/
+void * iter_remove(Iterator * iterator);
+
 #endif

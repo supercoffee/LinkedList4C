@@ -42,6 +42,7 @@ struct list_t{
 struct iter_t {
     Node * head;
     Node * cur;
+    List * list;
     int position;
 };
 
@@ -340,6 +341,7 @@ Iterator * list_iterator(List * list){
 
     iter -> head = list -> head;
     iter -> cur = list -> head;
+    iter -> list = list;
     iter -> position = -1;
 
     return iter;
@@ -369,6 +371,31 @@ int iter_hasNext(Iterator * iterator){
     }
 
     return 1;
+}
+
+void * iter_remove(Iterator * iterator){
+
+    Node * cur = iterator -> cur;
+    void * result = NULL;
+
+    if(cur == iterator -> head){
+        return NULL;
+    }
+    result =  cur -> data;
+    cur -> data = NULL;
+
+    cur->next->prev = cur -> prev;
+    cur->prev->next = cur -> next;
+
+    list->size--;
+
+    // move to previous because iter_next
+    // advanced the cursor before reading data
+    iterator -> cur = cur->next;
+ 
+    recycle(cur, iter->list);
+
+    return result;
 }
 
 void recycle(Node * node, List * list){
