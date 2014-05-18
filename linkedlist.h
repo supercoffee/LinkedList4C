@@ -14,35 +14,9 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-typedef struct node Node;
-
-//used internally by the list
-struct node{
-    
-    Node * next;
-    void * data;
-    Node * prev;
-    
-};
-
-typedef struct{
-    //this head node is a dummy;
-    Node * head;
-
-    int size;
-    
-} List;
-
-/*
-	position denotes the index of the node referenced
-	by cur. If no data has been read from the iterator, 
-	then position will be -1. 
-*/
-typedef struct{
-	Node * head;
-	Node * cur;
-	int position;
-} Iterator;
+typedef struct node_t Node;
+typedef struct iter_t Iterator;
+typedef struct list_t List;
 
 /*
     Creates an empty list.

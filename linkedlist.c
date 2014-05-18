@@ -8,7 +8,45 @@
 
 #include "linkedlist.h"
 
+#define RECYCLE 1
+
+//used internally by the list
+struct node_t{
+    
+    Node * next;
+    void * data;
+    Node * prev;
+    
+};
+
+struct list_t{
+    //this head node is a dummy;
+    Node * head;
+
+    int size;
+
+    /*
+        A chain of empty nodes whose previous
+        contents have been removed from the list.
+        Holding onto these references will save time
+        in allocating new nodes as these will be reused first. 
+    */
+    Node * recycle;
+};
+
+/*
+    position denotes the index of the node referenced
+    by cur. If no data has been read from the iterator, 
+    then position will be -1. 
+*/
+struct iter_t {
+    Node * head;
+    Node * cur;
+    int position;
+};
+
 void swap(Node * node1, Node * node2);
+void recycle(Node * node, List * list);
 
 
 List *  list_create(){
@@ -21,6 +59,8 @@ List *  list_create(){
     list -> head -> prev = list -> head;
 
     list -> size = 0;
+
+    list -> recycle = NULL;
     
     return list;
 
@@ -31,17 +71,20 @@ void list_clear(List * list){
     Node * head = list -> head;
     
     Node * cur = head -> next;
+    Node * next;
     while(cur != head){
-        
+        next = cur -> next;
+
         if(cur -> data != NULL){
             free(cur -> data);
+            cur->data = NULL;
         }
+
+        recycle(cur, list);
         
-        cur = cur -> next;
-        
-        free(cur -> prev);
-        
+        cur = next;
     }
+
 
     head -> prev = head;
     head -> next = head;
@@ -54,6 +97,15 @@ void list_destroy(List * list){
     
     list_clear(list);    
 
+    if(list->recycle){
+        Node * recycle = list-> recycle;
+        while(recycle){
+            Node * next = recycle -> next;
+            free(recycle);
+            recycle = next;
+        }
+    }
+
     free(list -> head);
     
     free(list);
@@ -64,8 +116,14 @@ void list_destroy(List * list){
 void list_add(List * list, void * data){
 
     Node * head = list -> head;
- 
-    Node * newNode = (Node * ) calloc(1, sizeof(Node));
+    Node * newNode;
+
+    if(list->recycle){
+        newNode = list->recycle;
+        list->recycle = newNode->next;
+    }else{
+        newNode = (Node * ) calloc(1, sizeof(Node));   
+    }
 
     newNode -> data = data;
 
@@ -83,8 +141,14 @@ void list_add(List * list, void * data){
 void list_addFirst(List * list, void * data){
 
     Node * head = list -> head;
- 
-    Node * newNode = (Node * ) calloc(1, sizeof(Node));
+    Node * newNode;
+
+    if(list->recycle){
+        newNode = list->recycle;
+        list->recycle = newNode->next;
+    }else{
+        newNode = (Node * ) calloc(1, sizeof(Node));   
+    }
 
     newNode -> data = data;
 
@@ -109,7 +173,14 @@ int list_insert(List * list, void * data, const int index){
 
     for(i = 0; i < index && cur != head; i++, cur = cur->next);
 
-    Node * newNode = (Node * ) calloc(1, sizeof(Node));
+    Node * newNode;
+
+    if(list->recycle){
+        newNode = list->recycle;
+        list->recycle = newNode->next;
+    }else{
+        newNode = (Node * ) calloc(1, sizeof(Node));   
+    }
 
     newNode -> data = data;
 
@@ -135,6 +206,8 @@ void list_print(List * list, char * (*toString)(void * item) ){
         printf("%s, ", toString(cur->data));
 
     }
+
+    printf("\n");
 
 }
 
@@ -175,7 +248,7 @@ void * list_pop(List * list){
     head -> prev = cur -> prev;
     cur -> prev -> next = head;
 
-    free(cur);
+    recycle(cur, list);
 
     list -> size--;
 
@@ -206,7 +279,7 @@ void * list_remove(List * list, int position){
     cur -> prev -> next = cur -> next;
     cur -> next -> prev = cur -> prev;
 
-    free(cur);
+    recycle(cur, list);
 
     list -> size--;
 
@@ -298,4 +371,24 @@ int iter_hasNext(Iterator * iterator){
     return 1;
 }
 
+void recycle(Node * node, List * list){
 
+    #if RECYCLE
+
+    node->prev = NULL;
+    node->data = NULL;
+    if(list->recycle == NULL){
+        node->next = NULL;
+    }
+    else{
+        node->next = list->recycle;
+    }
+
+    list->recycle = node;
+    #else
+
+    free(node);
+
+    #endif
+
+}
