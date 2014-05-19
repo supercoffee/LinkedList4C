@@ -376,6 +376,7 @@ int iter_hasNext(Iterator * iterator){
 void * iter_remove(Iterator * iterator){
 
     Node * cur = iterator -> cur;
+    List * list = iterator->list;
     void * result = NULL;
 
     if(cur == iterator -> head){
@@ -393,7 +394,7 @@ void * iter_remove(Iterator * iterator){
     // advanced the cursor before reading data
     iterator -> cur = cur->next;
  
-    recycle(cur, iter->list);
+    recycle(cur, list);
 
     return result;
 }
