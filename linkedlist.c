@@ -399,6 +399,14 @@ void * iter_remove(Iterator * iterator){
     return result;
 }
 
+void iter_reset(Iterator * iterator){
+
+    List * list = iterator -> list;
+    iterator -> head = list -> head;
+    iterator -> cur = list -> head;
+    iterator -> position = -1;
+}
+
 void recycle(Node * node, List * list){
 
     #if RECYCLE

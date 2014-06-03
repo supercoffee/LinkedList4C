@@ -141,6 +141,11 @@ void * iter_next(Iterator * iterator);
 int iter_hasNext(Iterator * iterator);
 
 /*
+	Resets the given iterator to the beginning of the list.
+*/
+void iter_reset(Iterator * iterator);
+
+/*
 	Remove the last accessed item from the list.
 */
 void * iter_remove(Iterator * iterator);
