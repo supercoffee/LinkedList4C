@@ -1,1 +1,4 @@
 test.c
+cmake-build-debug
+.idea
+CMakeLists.txt
