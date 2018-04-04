@@ -53,7 +53,7 @@ List *  list_create();
  Clean up an existing list including all of the
  referenced content in the list. 
 */
-void list_destroy(List * list);
+void list_destroy(List ** list);
 
 
 /*

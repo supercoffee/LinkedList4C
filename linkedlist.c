@@ -43,11 +43,15 @@ void list_clear(List *list) {
     list->size = 0;
 }
 
-void list_destroy(List *list) {
+void list_destroy(List **list) {
 
-    list_clear(list);
-    free(list->head);
-    free(list);
+    if (list == NULL || *list == NULL) {
+        return;
+    }
+    list_clear(*list);
+    free((*list)->head);
+    free(*list);
+    *list = NULL;
 }
 
 void list_add(List *list, void *data) {

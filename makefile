@@ -1,9 +1,10 @@
-tester: liblinkedlist test.c
-	gcc -Wall -L/opt/lib test.c -llinkedlist -o tester
-
 liblinkedlist: linkedlist.c
-	gcc -Wall -fPIC -c linkedlist.c
-	gcc -shared -Wl,-soname,liblinkedlist.so.1 -o liblinkedlist.so.1.0   *.o
-	cp liblinkedlist.so.1.0 /opt/lib
-	ln -sf /opt/lib/liblinkedlist.so.1.0 /opt/lib/liblinkedlist.so.1
-	ln -sf /opt/lib/liblinkedlist.so.1.0 /opt/lib/liblinkedlist.so
+	mkdir -p build
+	gcc -Wall -g -fPIC -c linkedlist.c -o build/liblinkedlist.o
+
+tests: liblinkedlist tests.c
+	gcc -Wall -g build/liblinkedlist.o Unity-2.4.3/src/unity.c tests.c -o testrunner
+
+valgrind_tests: tests
+	valgrind --leak-check=full --track-origins=yes ./testrunner
+

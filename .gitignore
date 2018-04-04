@@ -2,3 +2,6 @@ test.c
 cmake-build-debug
 .idea
 CMakeLists.txt
+*.o
+testrunner.dSYM
+testrunner
